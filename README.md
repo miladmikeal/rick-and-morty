@@ -1,4 +1,6 @@
-# rick-and-morty-graphql
+# Rick and Morty Info Site
+
+This Vue.js project fetches data from this [Rick and Morty](https://rickandmortyapi.com/graphql/) graphQL API using [vue-apollo](https://vue-apollo.netlify.com/). The UI is styled with TailwindCSS.
 
 ## Project setup
 ```
