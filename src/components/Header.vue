@@ -1,31 +1,58 @@
 <template>
-  <nav class="flex items-center justify-between flex-wrap bg-yellow-200 p-6 border-blue-500">
-    <div class="flex items-center flex-shrink-0 text-blue mr-6">
-      <img src="../assets/Rick_and_Morty.svg" alt="Logo" />
-    </div>
-
-    <div class="block flex-grow lg:flex lg:items-center ml-auto lg:w-auto">
-      <div class="flex justify-end text-sm lg:flex-grow">
-        <router-link
-          to="/"
-          class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-blue mr-4"
-        >Home</router-link>
-        <router-link
-          to="/characters"
-          class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-blue mr-4"
-        >Characters</router-link>
-        <router-link
-          to="/locations"
-          class="block mt-4 lg:inline-block lg:mt-0 text-blue-700 hover:text-blue"
-        >Locations</router-link>
+  <header class="bg-yellow-200 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3">
+    <div class="flex items-center justify-between px-4 py-3 sm:p-0">
+      <div>
+        <img src="../assets/Rick_and_Morty.svg" alt="Logo" />
+      </div>
+      <div class="sm:hidden">
+        <button
+          @click="isOpen = !isOpen"
+          type="button"
+          class="block text-blue-500 hover:text-blue-800 focus:text-blue-800 focus:outline-none"
+        >
+          <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+            <path
+              v-if="isOpen"
+              fill-rule="evenodd"
+              d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z"
+            />
+            <path
+              v-if="!isOpen"
+              fill-rule="evenodd"
+              d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+            />
+          </svg>
+        </button>
       </div>
     </div>
-  </nav>
+    <nav :class="isOpen ? 'block' : 'hidden'" class="px-2 pt-2 pb-4 sm:flex sm:p-0">
+      <router-link
+        to="/"
+        class="block px-2 py-1 text-blue-500 font-semibold rounded hover:text-blue-300 focus:outline-none"
+      >Home</router-link>
+      <router-link
+        to="/characters"
+        class="mt-1 block px-2 py-1 text-blue-500 font-semibold rounded hover:text-blue-300 sm:mt-0 sm:ml-2 focus:outline-none"
+      >Characters</router-link>
+      <router-link
+        to="/locations"
+        class="mt-1 block px-2 py-1 text-blue-500 font-semibold rounded hover:text-blue-300 sm:mt-0 sm:ml-2 focus:outline-none"
+      >Locations</router-link>
+      <router-link
+        to="/episodes"
+        class="mt-1 block px-2 py-1 text-blue-500 font-semibold rounded hover:text-blue-300 sm:mt-0 sm:ml-2 focus:outline-none"
+      >Episodes</router-link>
+    </nav>
+  </header>
 </template>
 
 <script>
 export default {
-  components: {}
+  data() {
+    return {
+      isOpen: false
+    };
+  }
 };
 </script>
 

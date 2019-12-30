@@ -1,27 +1,26 @@
 <template>
   <div class="container mx-auto">
-    <div class="flex flex-wrap justify-around">
+    <div v-if="characters.length === 0">Loading...</div>
+    <div v-else class="flex flex-wrap justify-center -mb-4">
       <div
         v-for="character in characters.results"
         :key="character.id"
-        class="w-1/4 bg-white shadow-lg rounded-lg overflow-hidden my-3 mx-1"
+        class="relative w-3/4 sm:w-1/2 lg:w-1/3 bg-white shadow-lg rounded-lg overflow-hidden px-2 my-3 mx-1"
       >
-        <div class="sm:flex sm:items-center px-6 py-4">
-          <img
-            class="block mx-auto sm:mx-0 sm:flex-shrink-0 h-16 sm:h-24 rounded-full"
-            :src="character.image"
-            alt="Character Image"
+        <CharacterCard :character="character" />
+        <svg
+          v-if="character.status === 'Dead'"
+          class="absolute inset-0 h-full w-full opacity-75"
+          height="511.992pt"
+          viewBox="0 0 511.992 511.992"
+          width="511.992pt"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m415.402344 495.421875-159.40625-159.410156-159.40625 159.410156c-22.097656 22.09375-57.921875 22.09375-80.019532 0-22.09375-22.097656-22.09375-57.921875 0-80.019531l159.410157-159.40625-159.410157-159.40625c-22.09375-22.097656-22.09375-57.921875 0-80.019532 22.097657-22.09375 57.921876-22.09375 80.019532 0l159.40625 159.410157 159.40625-159.410157c22.097656-22.09375 57.921875-22.09375 80.019531 0 22.09375 22.097657 22.09375 57.921876 0 80.019532l-159.410156 159.40625 159.410156 159.40625c22.09375 22.097656 22.09375 57.921875 0 80.019531-22.097656 22.09375-57.921875 22.09375-80.019531 0zm0 0"
+            fill="#e76e54"
           />
-          <div class="mt-4 sm:mt-0 sm:ml-4 text-center sm:text-left">
-            <p class="text-lg leading-tight">{{character.name}}</p>
-            <p class="text-sm leading-tight text-gray-600">{{character.species}}</p>
-            <div class="mt-4">
-              <button
-                class="text-blue-500 hover:text-white hover:bg-blue-500 border border-blue-500 text-xs font-semibold rounded-full px-4 py-1 leading-normal"
-              >Details</button>
-            </div>
-          </div>
-        </div>
+        </svg>
       </div>
     </div>
   </div>
@@ -29,41 +28,57 @@
 
 <script>
 import gql from "graphql-tag";
+import CharacterCard from "../components/CharacterCard";
 
 export default {
   data() {
     return {
       characters: [],
+      page: 1,
       iframeId: "",
-      iframeOpen: false
+      iframeOpen: false,
+      loading: false
     };
   },
+  components: {
+    CharacterCard
+  },
   apollo: {
-    characters: gql`
-      query {
-        characters {
-          results {
-            id
-            name
-            status
-            gender
-            species
-            type
-            origin {
-              name
-              type
-              dimension
+    characters: {
+      query: gql`
+        query characterPage($page: Int!) {
+          characters(page: $page) {
+            info {
+              next
+              count
+              prev
             }
-            location {
+            results {
+              id
               name
+              status
+              species
               type
-              dimension
+              image
             }
-            image
           }
         }
+      `,
+      variables() {
+        return { page: this.page };
+      },
+      deep: false,
+      update: data => data.page,
+      result({ data, loading }) {
+        if (!loading) {
+          this.characters = data.characters;
+        }
+      },
+      loadingKey: "loadingQueriesCount",
+      watchLoading(isLoading) {
+        this.loading = isLoading;
       }
-    `
+    }
   }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-100">
+  <div id="main">
     <Header />
     <router-view />
   </div>
@@ -13,3 +13,9 @@ export default {
   }
 };
 </script>
+
+<style>
+#main {
+  height: 100vh;
+}
+</style>
