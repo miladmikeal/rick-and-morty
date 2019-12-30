@@ -2,7 +2,7 @@
   <div class="locations">
     <h1>Locations</h1>
     <h1 v-if="loading">Loading...</h1>
-    <h1>{{locations}}</h1>
+    <h1 v-else>{{locations}}</h1>
   </div>
 </template>
 
